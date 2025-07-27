@@ -1,0 +1,8 @@
+README.md
+setup.py
+document_analyser.egg-info/PKG-INFO
+document_analyser.egg-info/SOURCES.txt
+document_analyser.egg-info/dependency_links.txt
+document_analyser.egg-info/top_level.txt
+exception/__init__.py
+exception/custom_exception.py
