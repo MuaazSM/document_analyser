@@ -21,7 +21,7 @@ class ModelLoader:
         """Validate necessary environment variables and Ensure API Keys exists."""
         required_vars = ["GOOGLE_API_KEY", "GROQ_API_KEY"]
         self.api_keys = {key: os.getenv(key) for key in required_vars}
-        missing = [k for k, v in self.api_key.items() if not v]
+        missing = [k for k, v in self.api_keys.items() if not v]
         if missing:
             log.error("Missing environment variables",missing_vars = missing)
             raise DocumentPortalException("Missing environment variables", sys)
@@ -67,9 +67,35 @@ class ModelLoader:
         elif provider == "groq":
             llm = ChatGroq(
                 model = model_name,
-                temperature=temperature,
-                max_output_tokens = max_tokens
+                temperature=temperature
             )
+            return llm
+        # elif provider == "openai":
+        #     return ChatOpenAI(
+        #         model=model_name,
+        #         api_key=self.api_keys["OPENAI_API_KEY"],
+        #         temperature=temperature,
+        #         max_tokens=max_tokens
+        #     )
+        else:
+            log.error("Unsupported LLM provider", provider=provider)
+            raise ValueError(f"Unsupported LLM provider: {provider}")
 
 if __name__ == "__main__":
-    pass
+    loader = ModelLoader()
+    
+    # Test embedding model loading
+    embeddings = loader.load_embeddings()
+    print(f"Embedding Model Loaded: {embeddings}")
+    
+    # Test the ModelLoader
+    result=embeddings.embed_query("Hello, how are you?")
+    print(f"Embedding Result: {result}")
+    
+    # Test LLM loading based on YAML config
+    llm = loader.load_llm()
+    print(f"LLM Loaded: {llm}")
+    
+    # Test the ModelLoader
+    result=llm.invoke("Hello, how are you?")
+    print(f"LLM Result: {result}")
