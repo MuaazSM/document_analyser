@@ -11,10 +11,11 @@ class DocumentAnalyzer:
     """
     Analyzes Docs using a pretrained model and logs all actions and supports session based organization
     """
-    def __init__(self):
+    def __init__(self, data_dir = None, session_id = None):
         pass
 
     def analyze_document(self):
         pass
 
-    
+    def analyze_metadata(self):
+        pass
