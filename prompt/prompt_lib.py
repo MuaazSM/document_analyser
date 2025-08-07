@@ -10,5 +10,5 @@ prompt = ChatPromptTemplate.from_template(
     Analyze the document:
 
     {document_text}
-    """ 
+    """
 )

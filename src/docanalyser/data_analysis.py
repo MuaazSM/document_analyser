@@ -12,9 +12,9 @@ class DocumentAnalyzer:
     Analyzes Docs using a pretrained model and logs all actions and supports session based organization
     """
     def __init__(self, data_dir = None, session_id = None):
-        self.log = CustomLogger.get_logger(__name__)
+        self.log = CustomLogger().get_logger(__name__)
         try:
-            self.model = ModelLoader()
+            self.loader = ModelLoader()
             self.llm = self.loader.load_llm()
 
             self.parser = JsonOutputParser(pydantic_object=Metadata)
@@ -29,8 +29,24 @@ class DocumentAnalyzer:
             raise DocumentPortalException("Error initializing document", e)
 
 
-    def analyze_document(self):
-        pass
+    def analyze_document(self, document_text:str)-> dict:
+        try:
+            chain = self.prompt | self.llm | self.fixing_parser
 
-    def analyze_metadata(self):
-        pass
+            self.log.info("Metadata analysis chain initialized")
+
+            response = chain.invoke({
+                "format_instructions" : self.parser.get_format_instructions(),
+                "document_text": document_text
+            })
+
+            self.log.info("Metadata extraction successful", keys = list(response.keys()))
+
+            return response
+
+        except Exception as e:
+            self.log.error(f"Metadata analysis failed: {e}")
+            raise DocumentPortalException("Metadata extraction failed", e)
+
+    
+ 

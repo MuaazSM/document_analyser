@@ -57,7 +57,7 @@ class DocumentHandler:
 
         except Exception as e:
             self.log.error(f"Error reading PDF: {e}")
-
+        return text
 
 if __name__ == "__main__":
     from pathlib import Path
