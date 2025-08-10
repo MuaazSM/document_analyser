@@ -17,14 +17,14 @@ class DocumentComparatorLLM:
         self.loader = ModelLoader()
         self.llm = self.loader.load_llm()
         self.parser = JsonOutputParser(pydantic_object=SummaryResponse)
-        OutputFixingParser.from_llm(parser = self.parser, llm = self.llm)
+        self.fixing_parser = OutputFixingParser.from_llm(parser = self.parser, llm = self.llm)
         self.prompt = PROMPT_REGISTRY["document_comparison"]
-        self.chain = self.prompt | self.llm | self.parser
+        self.chain = self.prompt | self.llm | self.parser | self.fixing_parser
         self.log.info("DocumentComparatorLLM initialized with model and parser.")
     
     def compare_documents(self):
         """
-        Format the response from the LLM into a structured format.
+        Compares two docs and then returns a structured response
         """
         try:
             pass
@@ -33,5 +33,8 @@ class DocumentComparatorLLM:
             raise DocumentPortalException("Error formatting response", sys) from e
 
     def _format_response(self):
+        """
+        Format the response from the LLM into a structured format.
+        """
         pass
 
