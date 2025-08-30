@@ -68,6 +68,6 @@ class DocumentIngestion:
 
         except Exception as e:
             self.log.error(f"Error reading PDF: {e}")
-            raise DocumentPortalException("An error encountered while reading the PDF", sys)
+            raise DocumentPortalException("An error encountered while reading the ", sys)
 
 

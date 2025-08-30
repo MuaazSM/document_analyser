@@ -1,5 +1,5 @@
 # utils/config_loader.py
-import yaml
+import yaml                                             #type:ignore
 import os
 
 def load_config(config_path: str = os.path.join("config", "config.yaml")) -> dict:
