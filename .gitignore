@@ -6,3 +6,9 @@ __pycache__/
 logs/
 *.pyc
 test.py
+*.egg-info/
+dist/
+build/
+*.log
+*.sqlite3
+*.DS_Store

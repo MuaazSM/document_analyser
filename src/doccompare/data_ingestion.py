@@ -56,15 +56,15 @@ class DocumentIngestion:
         Reads a PDF file and extracts text from each page.
         """
         try:
-             with fitz.open(pdf_path) as doc:
+            with fitz.open(pdf_path) as doc:
                 if doc.is_encrypted:
                     raise ValueError(f"PDF is encrypted: {pdf_path.name}")
                 all_text = []
                 for page_num in range(doc.page_count):
                     page=doc.load_page(page_num)
                     text = page.get_text() #type: ignore
-                    if text.strip():
-                        all_text.append(f"\n --- Page {page_num + 1} --- \n{text}")
+                    if text.strip():                                                           # for empty pages adds a header
+                        all_text.append(f"\n --- Page {page_num + 1} --- \n{text}") 
                 self.log.info("PDF read successfully", file=str(pdf_path), pages=len(all_text))
                 return "\n".join(all_text)
         except Exception as e:
@@ -73,8 +73,8 @@ class DocumentIngestion:
         
     def combine_documents(self)->str:
         try:
-            content_dict = {}
-            doc_parts = []
+            content_dict = {}                                                                   #filename to content mapping                 
+            doc_parts = []                                                                      #chunked parts of the doc
 
             for filename in sorted(self.base_dir.iterdir()):
                 if filename.is_file() and filename.suffix == ".pdf":
