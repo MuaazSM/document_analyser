@@ -5,7 +5,7 @@ from logger.custom_logger import CustomLogger
 from exception.custom_exception import DocumentPortalException
 
 class DocumentIngestion:
-    def __init__(self,base_dir:str="data\\document_compare"):
+    def __init__(self,base_dir:str="data//document_compare"):
         self.log = CustomLogger().get_logger(__name__)
         self.base_dir = Path(base_dir)
         self.base_dir.mkdir(parents=True, exist_ok=True)
