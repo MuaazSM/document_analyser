@@ -29,7 +29,7 @@ class ConversationalRAG:
             self.log.info("Created History aware retriever", session_id = session_id)
             self.qa_chain = create_stuff_documents_chain(self.llm, self.qa_prompt)
             self.rag_chain = create_retrieval_chain(self.history_aware_retriever, self.qa_chain)
-            self.log.info("Initializaed Conversational RAG", session_id = session_id)
+            self.log.info("Initialized Conversational RAG", session_id = session_id)
             self.chain = RunnableWithMessageHistory(
                 self.rag_chain,
                 message_history = self._get_session_history(),
